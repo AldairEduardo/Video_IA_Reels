@@ -56,20 +56,18 @@ copy .env.example .env     # y completa ELEVENLABS_API_KEY y OPENROUTER_API_KEY
    ```console
    npm run subtitulos -- --alineacion assets/audio/mi-reel/voz.alignment.json --salida assets/subtitulos/mi-reel.json
    ```
-5. **Avatar con lip-sync SOLO en el hook** (recomendado, ≈ 0,45 USD por reel):
+5. **Avatar con lip-sync completo** (formato principal, ≈ 0,05 USD/s → ~1,50 USD por reel de 30 s):
    ```console
-   # Primero simula para ver dónde corta y cuánto cuesta (gratis):
-   npm run avatar -- --imagen assets/imagenes/foto-9x16.jpg --audio assets/audio/mi-reel/voz.mp3 --salida public/mi-reel/avatar-hook.mp4 --hasta 9 --simular
-   # Luego genera de verdad (quita --simular):
-   npm run avatar -- --imagen assets/imagenes/foto-9x16.jpg --audio assets/audio/mi-reel/voz.mp3 --salida public/mi-reel/avatar-hook.mp4 --hasta 9
+   npm run avatar -- --imagen assets/imagenes/foto-9x16.jpg --audio assets/audio/mi-reel/voz.mp3 --salida public/mi-reel/avatar-hablando.mp4
    ```
-   El script corta el audio en el final de frase más cercano a `--hasta` y te dice el `durationInFrames` del tramo del avatar.
-   Sin `--hasta` genera el video completo con lip-sync (≈ 0,05 USD/s → 1,50 USD por 30 s).
    > OpenRouter exige el audio en una URL pública: el script lo sube a litterbox.catbox.moe y se borra solo en 1 hora.
-6. **Composición** → duplica `src/compositions/ReelInfielesHook.tsx` (avatar en el hook + foto animada) y ajusta:
-   - `id`, rutas en `staticFile(...)` (copia `voz.mp3` y la foto 9:16 a `public/mi-reel/`)
-   - `durationInFrames` del tramo **Hook avatar** (el valor que dio el script)
-   - los tramos **Foto: …**: un `Series.Sequence` por frase, con su encuadre (scale/transformOrigin)
+
+   **Opción económica (≈ 0,45 USD):** agrega `--hasta 9` para generar lip-sync solo en el hook (corta en el final de frase
+   más cercano y te dice el `durationInFrames`). Usa `--simular` para ver corte y costo sin gastar.
+   Esta opción se combina con la plantilla `ReelInfielesHook.tsx` (avatar en el hook + foto animada).
+6. **Composición** → duplica `src/compositions/ReelInfieles.tsx` y ajusta:
+   - `id` y la ruta del video en `staticFile(...)`
+   - los acercamientos (`scale` del video) en las frases fuertes
    - los subtítulos en `captions={[...]}` y la duración total en `<Composition>`
    - regístrala en `src/Root.tsx`
 7. **Previsualizar y editar** → `npm run dev` (Remotion Studio).
@@ -83,8 +81,8 @@ copy .env.example .env     # y completa ELEVENLABS_API_KEY y OPENROUTER_API_KEY
 | Comando | Qué hace |
 |---|---|
 | `npm run dev` | Abre Remotion Studio |
-| `npm run render:reel-infieles` | Reel de ejemplo con lip-sync completo |
-| `npm run render:reel-infieles-hook` | Reel de ejemplo con lip-sync solo en el hook (formato recomendado) |
+| `npm run render:reel-infieles` | Reel de ejemplo con lip-sync completo (formato principal) |
+| `npm run render:reel-infieles-hook` | Reel de ejemplo con lip-sync solo en el hook (opción económica) |
 | `npm run voz -- ...` | Genera voz con ElevenLabs |
 | `npm run subtitulos -- ...` | Convierte tiempos de voz en subtítulos |
 | `npm run avatar -- ...` | Genera el video con lip-sync |
@@ -94,7 +92,6 @@ copy .env.example .env     # y completa ELEVENLABS_API_KEY y OPENROUTER_API_KEY
 ## Notas para Reels
 
 - Duración objetivo: **~30 s** (guion de unas 75–80 palabras con la voz de Johanna).
-- En los primeros planos de la foto usa `transformOrigin` alto (`50% 0%`–`50% 10%`) para que la cara quede debajo del título.
-
+- En la plantilla económica, en los primeros planos de la foto usa `transformOrigin` alto (`50% 0%`–`50% 10%`) para que la cara quede debajo del título.
 - La franja inferior (~350 px) y el lateral derecho los tapa la interfaz de Instagram/TikTok: deja ahí solo elementos no críticos.
 - Palabras clave resaltadas en rojo: se configuran en `KEYWORDS` dentro de `src/components/ReelCaptions.tsx`.
