@@ -1,0 +1,37 @@
+{
+  "name": "formato-video-ia",
+  "version": "1.0.0",
+  "description": "Reels con IA: voz ElevenLabs + lip-sync HeyGen (OpenRouter) + edición en Remotion",
+  "repository": {},
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@remotion/captions": "4.0.534",
+    "@remotion/cli": "4.0.534",
+    "@remotion/google-fonts": "4.0.534",
+    "@remotion/media": "4.0.534",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.534"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config-flat": "4.0.534",
+    "@types/react": "19.2.7",
+    "@types/web": "0.0.166",
+    "eslint": "9.39.5",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "dev": "remotion studio",
+    "render:reel-infieles": "remotion render ReelInfieles out/reel-infieles.mp4",
+    "render:reel-infieles-hook": "remotion render ReelInfielesHook out/reel-infieles-hook.mp4",
+    "voz": "node scripts/generar-voz.mjs",
+    "subtitulos": "node scripts/generar-subtitulos.mjs",
+    "avatar": "node scripts/generar-avatar.mjs",
+    "recortar": "node scripts/recortar-9x16.mjs",
+    "build": "remotion bundle",
+    "upgrade": "remotion upgrade",
+    "lint": "eslint src && tsc"
+  }
+}

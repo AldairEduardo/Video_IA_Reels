@@ -1,0 +1,11 @@
+node_modules
+dist
+.DS_Store
+
+# Claves privadas
+.env
+.env.*
+!.env.example
+
+# Videos renderizados
+out
